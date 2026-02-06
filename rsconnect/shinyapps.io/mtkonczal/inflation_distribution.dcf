@@ -5,6 +5,6 @@ account: mtkonczal
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 10204346
-bundleId: 11544207
+bundleId: 11544495
 url: https://mtkonczal.shinyapps.io/inflation_distribution/
 version: 1

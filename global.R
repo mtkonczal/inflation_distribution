@@ -1,15 +1,15 @@
 library(shiny)
 library(bslib)
 library(shinycssloaders)
-library(tidyverse)
+library(dplyr)
 library(lubridate)
 library(ggplot2)
 library(RColorBrewer)
 library(scales)
+library(ggtext)
 
-# Load data once (shared by ui.R and server.R)
-githubURL <- "https://github.com/mtkonczal/BLS-CPI-Inflation-Analysis/raw/main/data/shiny_density_test.rds"
-dataset <- readRDS(url(githubURL))
+# Load data from local data folder
+dataset <- readRDS("data/shiny_density_test.rds")
 
 # Date factor preprocessing
 ordered_levels <- unique(format(sort(dataset$date, decreasing = TRUE), "%B, %Y"))

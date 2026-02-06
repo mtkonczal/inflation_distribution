@@ -37,6 +37,14 @@ server <- function(input, output, session) {
   output$plot <- renderPlot({
     req(nrow(data_combined()) > 0)
 
+    # Build colored subtitle from series names using brewer palette colors
+    series_names <- levels(data_combined()$name)
+    palette_colors <- brewer.pal(max(3, length(series_names)), input$color_scale)
+    colored_labels <- mapply(function(nm, col) {
+      paste0("<span style='color:", col, ";font-weight:bold;'>", nm, "</span>")
+    }, series_names, palette_colors[seq_along(series_names)])
+    subtitle_html <- paste(colored_labels, collapse = " &nbsp; | &nbsp; ")
+
     p <- ggplot(data = data_combined()) +
       geom_density(aes(x = Pvalues, fill = name, color = name),
                    alpha = 0.5, linewidth = 2, kernel = tolower(input$kernel_list)) +
@@ -44,25 +52,26 @@ server <- function(input, output, session) {
       scale_fill_brewer(palette = input$color_scale) +
       theme_minimal() +
       theme(
-        legend.position = c(0.7, 0.8),
+        legend.position = "none",
         plot.title = element_text(size = 30, face = "bold"),
         plot.title.position = "plot",
-        plot.subtitle = element_text(size = 16),
+        plot.subtitle = element_markdown(size = 20),
         axis.title = element_text(size = 16),
         plot.caption = element_text(size = 16),
-        axis.text = element_text(size = 12),
-        legend.title = element_blank(),
-        legend.text = element_text(size = 25)
+        axis.text = element_text(size = 12)
       ) +
       labs(
         x = "Percent Change",
-        title = paste0(input$inflation_type, " Inflation Density Distribution")
+        title = paste0(input$inflation_type, " Inflation Density Distribution"),
+        subtitle = subtitle_html
       ) +
       scale_x_continuous(label = percent)
 
+    caption_text <- "Mike Konczal"
     if (exclude_pct() > 0) {
-      p <- p + labs(caption = paste0("Top and bottom ", percent(exclude_pct()), " of distribution excluded."))
+      caption_text <- paste0(caption_text, "\nTop and bottom ", percent(exclude_pct()), " of distribution excluded.")
     }
+    p <- p + labs(caption = caption_text)
 
     p
   })

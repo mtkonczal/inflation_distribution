@@ -19,17 +19,17 @@ page_fluid(
       width = 3,
       h5("Series 1"),
       selectInput("date1", "Date:", cpi_dates, selected = maxdate),
-      selectInput("length1", "Change Window:", levels(dataset$length_typeF))
+      selectInput("length1", "Change Window:", levels(dataset$length_typeF), selected = "3-month")
     ),
 
     # Series 2
     column(
       width = 3,
-      checkboxInput("include2", "Show Series 2", value = TRUE),
+      h5("Series 2"),
       conditionalPanel(
         condition = "input.include2",
         selectInput("date2", "Date:", cpi_dates, selected = maxdate_1yr),
-        selectInput("length2", "Change Window:", levels(dataset$length_typeF))
+        selectInput("length2", "Change Window:", levels(dataset$length_typeF), selected = "3-month")
       )
     ),
 
@@ -41,9 +41,10 @@ page_fluid(
                   min = 0, max = 0.5, value = 0.03, step = 0.01)
     ),
 
-    # Advanced options + last updated
+    # Show Series 2 checkbox + Advanced options + last updated
     column(
       width = 3,
+      checkboxInput("include2", "Show Series 2", value = TRUE),
       accordion(
         open = FALSE,
         accordion_panel(
