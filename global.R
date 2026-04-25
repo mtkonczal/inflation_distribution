@@ -56,4 +56,4 @@ brewer_colors <- c("Accent", "Dark2", "Paired", "Pastel1", "Pastel2", "Set1", "S
 kernel_choices <- c("Gaussian", "Epanechnikov", "Rectangular", "Triangular", "Biweight", "Cosine", "Optcosine")
 
 # Last updated timestamp (updated by 1_shiny_data_update.R)
-last_updated <- "February  5, 2026"
+last_updated <- "April 24, 2026"
